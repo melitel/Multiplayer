@@ -31,6 +31,7 @@ public class NetworkServer : IDisposable
         response.Position = SpawnPoint.GetRandomSpawnPos();
         response.Rotation = Quaternion.identity;
         response.CreatePlayerObject = true;
+        Debug.Log($"ApprovalCheck: Approved player {request.ClientNetworkId}, Name: {userData.userName}");
     }
     private void OnNetworkReady()
     {

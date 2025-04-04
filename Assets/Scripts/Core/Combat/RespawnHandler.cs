@@ -44,6 +44,8 @@ public class RespawnHandler : NetworkBehaviour
     private void HandlePlayerDie(TankPlayer player)
     { 
         int coinsKept = (int)(player.Wallet.TotalCoins.Value * (keptCoinPercentage / 100));
+        Debug.Log($"[RespawnHandler] Player {player.OwnerClientId} died. Keeping {coinsKept} coins.");
+        
         Destroy(player.gameObject);
 
         StartCoroutine(RespawnPlayer(player.OwnerClientId, coinsKept));
@@ -51,12 +53,14 @@ public class RespawnHandler : NetworkBehaviour
 
     private IEnumerator RespawnPlayer(ulong ownerClientId, int coinsKept)
     {
-        yield return null;
+        yield return new WaitForSeconds(1f);
+
 
         TankPlayer playerInstance = Instantiate(
             playerPrefab, SpawnPoint.GetRandomSpawnPos(), Quaternion.identity);
 
         playerInstance.NetworkObject.SpawnAsPlayerObject(ownerClientId);
+
         playerInstance.Wallet.TotalCoins.Value += coinsKept;
     }
 }
